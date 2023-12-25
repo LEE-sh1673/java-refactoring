@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'book'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    implementation 'org.assertj:assertj-core:3.23.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0-rc1'
+
+    implementation 'com.github.woowacourse-projects:mission-utils:1.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}
