@@ -32,7 +32,7 @@ class Statement {
             volumnCredits += volumeCreditsFor(performance);
 
             // 청구 내역을 출력한다.
-            result += plays.get(performance).name()
+            result += playFor(performance).name()
                     + ": " + format.format(amountFor(performance) / 100)
                     + " (" + performance.audience() + "석)\n";
             totalAmount += amountFor(performance);
@@ -45,7 +45,7 @@ class Statement {
     private long volumeCreditsFor(final Performance performance) {
         long volumnCredits = Math.max(performance.audience() - 30, 0L);
 
-        if ("comedy".equals(plays.get(performance).type())) {
+        if ("comedy".equals(playFor(performance).type())) {
             volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
         }
         return volumnCredits;
@@ -54,7 +54,7 @@ class Statement {
     private long amountFor(final Performance performance) {
         long amount = 0L;
 
-        switch (plays.get(performance).type()) {
+        switch (playFor(performance).type()) {
             case "tragedy":  // 비극
                 amount = 40_000L;
                 if (performance.audience() > 30) {
@@ -70,9 +70,13 @@ class Statement {
                 break;
             default:
                 throw new RuntimeException(
-                        String.format("알 수 없는 장르: %s", plays.get(performance).type())
+                        String.format("알 수 없는 장르: %s", playFor(performance).type())
                 );
         }
         return amount;
+    }
+
+    private Play playFor(final Performance performance) {
+        return plays.findById(performance.playID());
     }
 }
