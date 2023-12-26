@@ -1,28 +1,47 @@
 package book.utils;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.nio.file.Paths;
 
-public class JsonReader {
+public final class JsonReader {
 
-    public String read(final String fileName) throws URISyntaxException, IOException {
-        return new String(readBytes(uri(fileName)));
+    private static final String BASE_PATH
+            = String.join(File.separator, "src", "test", "resources");
+
+    private static final String INVALID_FILE_NAME = "\"%s\"(은)는 유효하지 않은 파일 이름입니다.";
+    private static final String FILE_NOT_FOUND = "\"%s\"라는 이름의 파일을 찾을 수 없습니다.";
+    private static final String IO_EXCEPTION_OCCURRED = "I/O exception of some sort has occurred.";
+
+    @WithSpan
+    public static String read(final String fileName) {
+        return new String(readBytes(stream(toFile(fileName))));
     }
 
-    private URI uri(final String fileName) throws URISyntaxException {
-        final URL url = this.getClass().getClassLoader().getResource(fileName);
-
-        if (url == null) {
-            throw new IllegalStateException("URL should not be null; check again.");
+    private static File toFile(final String fileName) {
+        if (StringUtils.isBlank(fileName)) {
+            throw new IllegalArgumentException(String.format(INVALID_FILE_NAME, fileName));
         }
-        return url.toURI();
+        return Paths.get(BASE_PATH, fileName).toAbsolutePath().toFile();
     }
 
-    private static byte[] readBytes(URI uri) throws IOException {
-        return Files.readAllBytes(Paths.get(uri));
+    private static InputStream stream(final File file) {
+        try {
+            return new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException(String.format(FILE_NOT_FOUND, file.getName()));
+        }
+    }
+
+    private static byte[] readBytes(final InputStream in) {
+        try {
+            return in.readAllBytes();
+        } catch (IOException e) {
+            throw new IllegalStateException(IO_EXCEPTION_OCCURRED);
+        }
     }
 }

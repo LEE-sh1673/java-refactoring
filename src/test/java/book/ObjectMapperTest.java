@@ -1,25 +1,20 @@
 package book;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
+import book.utils.JsonReader;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import book.utils.JsonReader;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 class ObjectMapperTest {
 
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    private final JsonReader reader = new JsonReader();
 
     @BeforeAll
     static void tearUp() {
@@ -29,7 +24,7 @@ class ObjectMapperTest {
     @Test
     void test_deserialization() throws IOException, URISyntaxException {
         // given
-        final String contents = reader.read("user.json");
+        final String contents = JsonReader.read("user.json");
 
         // when
         final User user = mapper.readValue(contents, User.class);
