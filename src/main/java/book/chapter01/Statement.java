@@ -29,13 +29,7 @@ class Statement {
         format.setMaximumFractionDigits(2);
 
         for (Performance performance : invoice.performances()) {
-            // 포인트를 적립한다.
-            volumnCredits += Math.max(performance.audience() - 30, 0L);
-
-            // 희극 관객 5명마다 추가 포인트를 제공한다.
-            if ("comedy".equals(plays.get(performance).type())) {
-                volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
-            }
+            volumnCredits += volumeCreditsFor(performance);
 
             // 청구 내역을 출력한다.
             result += plays.get(performance).name()
@@ -46,6 +40,15 @@ class Statement {
         result += "총액: " + format.format(totalAmount / 100) + "\n";
         result += "적립 포인트: " + volumnCredits + "점\n";
         return result;
+    }
+
+    private long volumeCreditsFor(final Performance performance) {
+        long volumnCredits = Math.max(performance.audience() - 30, 0L);
+
+        if ("comedy".equals(plays.get(performance).type())) {
+            volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
+        }
+        return volumnCredits;
     }
 
     private long amountFor(final Performance performance) {
@@ -67,7 +70,8 @@ class Statement {
                 break;
             default:
                 throw new RuntimeException(
-                        String.format("알 수 없는 장르: %s", plays.get(performance).type()));
+                        String.format("알 수 없는 장르: %s", plays.get(performance).type())
+                );
         }
         return amount;
     }
