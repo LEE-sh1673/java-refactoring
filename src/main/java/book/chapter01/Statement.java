@@ -9,7 +9,7 @@ class Statement {
     private final Invoice invoice;
     private final Plays plays;
 
-    public Statement(final Invoice invoice, final Plays plays) {
+    Statement(final Invoice invoice, final Plays plays) {
         this.invoice = invoice;
         this.plays = plays;
     }
@@ -20,7 +20,7 @@ class Statement {
      * @return 공연료 청구 내역에 대한 문자열
      */
     @WithSpan
-    public String statement() {
+    String statement() {
         long totalAmount = 0L;
         long volumnCredits = 0L;
         String result = "청구 내역 (고객명: " + invoice.customer() + ")\n";
