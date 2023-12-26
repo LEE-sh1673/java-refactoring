@@ -7,7 +7,6 @@ import java.util.Locale;
 class Statement {
 
     private final Invoice invoice;
-
     private final Plays plays;
 
     public Statement(final Invoice invoice, final Plays plays) {
