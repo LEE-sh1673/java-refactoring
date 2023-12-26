@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ class ObjectMapperTest {
     }
 
     @Test
-    void test_deserialization() throws IOException, URISyntaxException {
+    void test_deserialization() throws IOException {
         // given
         final String contents = JsonReader.read("user.json");
 
