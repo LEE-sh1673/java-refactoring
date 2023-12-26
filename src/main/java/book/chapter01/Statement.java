@@ -25,19 +25,16 @@ class Statement {
         long volumnCredits = 0L;
         String result = "청구 내역 (고객명: " + invoice.customer() + ")\n";
 
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
-        format.setMaximumFractionDigits(2);
-
         for (Performance performance : invoice.performances()) {
             volumnCredits += volumeCreditsFor(performance);
 
             // 청구 내역을 출력한다.
             result += playFor(performance).name()
-                    + ": " + format.format(amountFor(performance) / 100)
+                    + ": " + usd(amountFor(performance))
                     + " (" + performance.audience() + "석)\n";
             totalAmount += amountFor(performance);
         }
-        result += "총액: " + format.format(totalAmount / 100) + "\n";
+        result += "총액: " + usd(totalAmount) + "\n";
         result += "적립 포인트: " + volumnCredits + "점\n";
         return result;
     }
@@ -78,5 +75,11 @@ class Statement {
 
     private Play playFor(final Performance performance) {
         return plays.findById(performance.playID());
+    }
+
+    private String usd(final long amount) {
+        final NumberFormat usd = NumberFormat.getCurrencyInstance(Locale.US);
+        usd.setMaximumFractionDigits(2);
+        return usd.format(amount / 100);
     }
 }
