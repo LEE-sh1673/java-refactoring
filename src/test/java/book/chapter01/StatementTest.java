@@ -15,6 +15,8 @@ class StatementTest {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    private final String answer = ResourceReader.read("answer.txt");
+
     @BeforeAll
     static void tearUp() {
         mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
@@ -40,13 +42,6 @@ class StatementTest {
         final String result = statement.statement(invoice, plays);
 
         // then
-        assertThat(result).isEqualTo("""
-                청구 내역 (고객명: BigCo)
-                Hamlet: $650.00 (55석)
-                As You Like It: $580.00 (35석)
-                Othello: $500.00 (40석)
-                총액: $1,730.00
-                적립 포인트: 47점
-                """);
+        assertThat(result).isEqualTo(answer);
     }
 }
