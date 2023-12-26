@@ -38,8 +38,8 @@ class StatementTest {
         );
 
         // when
-        final Statement statement = new Statement();
-        final String result = statement.statement(invoice, plays);
+        final Statement statement = new Statement(invoice, plays);
+        final String result = statement.statement();
 
         // then
         assertThat(result).isEqualTo(answer);

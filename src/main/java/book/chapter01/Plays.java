@@ -13,4 +13,8 @@ class Plays {
     Play findById(final String playID) {
         return plays.get(playID);
     }
+
+    Play get(final Performance performance) {
+        return findById(performance.playID());
+    }
 }
