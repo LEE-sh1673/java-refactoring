@@ -22,7 +22,7 @@ class ObjectMapperTest {
     @Test
     void test_deserialization() throws IOException {
         // given
-        final String contents = JsonReader.read("user.json");
+        final String contents = ResourceReader.read("user.json");
 
         // when
         final User user = mapper.readValue(contents, User.class);

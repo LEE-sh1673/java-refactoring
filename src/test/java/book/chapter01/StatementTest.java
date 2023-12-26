@@ -2,7 +2,7 @@ package book.chapter01;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import book.utils.JsonReader;
+import book.utils.ResourceReader;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,11 +27,11 @@ class StatementTest {
     void test_statement() throws JsonProcessingException {
         // given
         final Invoice invoice = mapper.readValue(
-                JsonReader.read("invoice.json"),
+                ResourceReader.read("invoice.json"),
                 Invoice.class
         );
         final Plays plays = mapper.readValue(
-                JsonReader.read("plays.json"),
+                ResourceReader.read("plays.json"),
                 Plays.class
         );
 

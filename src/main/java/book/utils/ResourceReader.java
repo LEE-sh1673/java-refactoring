@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
-public final class JsonReader {
+public final class ResourceReader {
 
     private static final String BASE_PATH
             = String.join(File.separator, "src", "test", "resources");
