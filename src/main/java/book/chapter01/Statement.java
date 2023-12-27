@@ -78,8 +78,6 @@ class Statement {
     }
 
     private String usd(final long amount) {
-        final NumberFormat usd = NumberFormat.getCurrencyInstance(Locale.US);
-        usd.setMaximumFractionDigits(2);
-        return usd.format(amount / 100);
+        return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
     }
 }
