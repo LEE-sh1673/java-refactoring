@@ -10,7 +10,7 @@ class Statement {
      * 공연료 청구서를 반환한다.
      *
      * @param invoice 공연료 청구서
-     * @param plays 공연한 연극 정보
+     * @param plays   공연한 연극 정보
      * @return 공연료 청구 내역에 대한 문자열
      */
     @WithSpan
@@ -22,7 +22,7 @@ class Statement {
      * 공연료 청구서를 html 형식으로 반환한다.
      *
      * @param invoice 공연료 청구서
-     * @param plays 공연한 연극 정보
+     * @param plays   공연한 연극 정보
      * @return 공연료 청구 내역에 대한 html 문자열
      */
     String htmlStatement(final Invoice invoice, final Plays plays) {
@@ -34,16 +34,20 @@ class Statement {
     }
 
     private String renderPlainText(final StatementData data) {
-        String result = "청구 내역 (고객명: " + data.customer() + ")\n";
+        StringBuilder result = new StringBuilder();
+        result.append(String.format("청구 내역 (고객명: %s)\n", data.customer()));
 
         for (Performance performance : data.performances()) {
-            result += data.playFor(performance).name()
-                    + ": " + usd(data.amountFor(performance))
-                    + " (" + performance.audience() + "석)\n";
+            result.append(String.format(
+                    "%s: %s (%d석)\n",
+                    data.playFor(performance).name(),
+                    usd(data.amountFor(performance)),
+                    performance.audience()
+            ));
         }
-        result += "총액: " + usd(data.totalAmount()) + "\n";
-        result += "적립 포인트: " + data.totalVolumeCredits() + "점\n";
-        return result;
+        result.append(String.format("총액: %s\n", usd(data.totalAmount())));
+        result.append(String.format("적립 포인트: %d점\n", data.totalVolumeCredits()));
+        return result.toString();
     }
 
     private String renderHtml(final StatementData data) {
