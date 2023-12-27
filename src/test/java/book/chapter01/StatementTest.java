@@ -15,7 +15,8 @@ class StatementTest {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private final String answer = ResourceReader.read("answer.txt");
+    private final String answerTxt = ResourceReader.read("answer.txt");
+    private final String answerHtml = ResourceReader.read("answer.html");
 
     @BeforeAll
     static void tearUp() {
@@ -42,6 +43,26 @@ class StatementTest {
         final String result = statement.statement(invoice, plays);
 
         // then
-        assertThat(result).isEqualTo(answer);
+        assertThat(result).isEqualTo(answerTxt);
+    }
+
+    @Test
+    void test_htmlStatement() throws JsonProcessingException {
+        // given
+        final Invoice invoice = mapper.readValue(
+                ResourceReader.read("invoice.json"),
+                Invoice.class
+        );
+        final Plays plays = mapper.readValue(
+                ResourceReader.read("plays.json"),
+                Plays.class
+        );
+
+        // when
+        final Statement statement = new Statement();
+        final String result = statement.htmlStatement(invoice, plays);
+
+        // then
+        assertThat(result).isEqualTo(answerHtml);
     }
 }
