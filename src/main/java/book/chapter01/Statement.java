@@ -31,23 +31,13 @@ class Statement {
                     + " (" + performance.audience() + "석)\n";
             totalAmount += amountFor(performance);
         }
-
-        long volumnCredits = 0L;
-        for (Performance performance : invoice.performances()) {
-            volumnCredits += volumeCreditsFor(performance);
-        }
         result += "총액: " + usd(totalAmount) + "\n";
-        result += "적립 포인트: " + volumnCredits + "점\n";
+        result += "적립 포인트: " + totalVolumeCredits() + "점\n";
         return result;
     }
 
-    private long volumeCreditsFor(final Performance performance) {
-        long volumnCredits = Math.max(performance.audience() - 30, 0L);
-
-        if ("comedy".equals(playFor(performance).type())) {
-            volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
-        }
-        return volumnCredits;
+    private Play playFor(final Performance performance) {
+        return plays.findById(performance.playID());
     }
 
     private long amountFor(final Performance performance) {
@@ -75,8 +65,21 @@ class Statement {
         return amount;
     }
 
-    private Play playFor(final Performance performance) {
-        return plays.findById(performance.playID());
+    private long totalVolumeCredits() {
+        long volumnCredits = 0L;
+        for (Performance performance : invoice.performances()) {
+            volumnCredits += volumeCreditsFor(performance);
+        }
+        return volumnCredits;
+    }
+
+    private long volumeCreditsFor(final Performance performance) {
+        long volumnCredits = Math.max(performance.audience() - 30, 0L);
+
+        if ("comedy".equals(playFor(performance).type())) {
+            volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
+        }
+        return volumnCredits;
     }
 
     private String usd(final long amount) {
