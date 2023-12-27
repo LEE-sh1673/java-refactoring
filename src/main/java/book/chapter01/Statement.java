@@ -21,7 +21,6 @@ class Statement {
      */
     @WithSpan
     String statement() {
-        long totalAmount = 0L;
         String result = "청구 내역 (고객명: " + invoice.customer() + ")\n";
 
         for (Performance performance : invoice.performances()) {
@@ -29,9 +28,8 @@ class Statement {
             result += playFor(performance).name()
                     + ": " + usd(amountFor(performance))
                     + " (" + performance.audience() + "석)\n";
-            totalAmount += amountFor(performance);
         }
-        result += "총액: " + usd(totalAmount) + "\n";
+        result += "총액: " + usd(totalAmount()) + "\n";
         result += "적립 포인트: " + totalVolumeCredits() + "점\n";
         return result;
     }
@@ -65,6 +63,18 @@ class Statement {
         return amount;
     }
 
+    private String usd(final long amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
+    }
+
+    private long totalAmount() {
+        long totalAmount = 0L;
+        for (Performance performance : invoice.performances()) {
+            totalAmount += amountFor(performance);
+        }
+        return totalAmount;
+    }
+
     private long totalVolumeCredits() {
         long volumnCredits = 0L;
         for (Performance performance : invoice.performances()) {
@@ -80,9 +90,5 @@ class Statement {
             volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
         }
         return volumnCredits;
-    }
-
-    private String usd(final long amount) {
-        return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
     }
 }
