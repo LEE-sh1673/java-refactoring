@@ -87,7 +87,7 @@ class Statement {
         long volumnCredits = Math.max(performance.audience() - 30, 0L);
 
         if ("comedy".equals(playFor(performance).type())) {
-            volumnCredits += (long) Math.floor((double) performance.audience() / 5L);
+            volumnCredits += Math.floorDiv(performance.audience(), 5);
         }
         return volumnCredits;
     }
