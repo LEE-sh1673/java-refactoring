@@ -22,17 +22,19 @@ class Statement {
     @WithSpan
     String statement() {
         long totalAmount = 0L;
-        long volumnCredits = 0L;
         String result = "청구 내역 (고객명: " + invoice.customer() + ")\n";
 
         for (Performance performance : invoice.performances()) {
-            volumnCredits += volumeCreditsFor(performance);
-
             // 청구 내역을 출력한다.
             result += playFor(performance).name()
                     + ": " + usd(amountFor(performance))
                     + " (" + performance.audience() + "석)\n";
             totalAmount += amountFor(performance);
+        }
+
+        long volumnCredits = 0L;
+        for (Performance performance : invoice.performances()) {
+            volumnCredits += volumeCreditsFor(performance);
         }
         result += "총액: " + usd(totalAmount) + "\n";
         result += "적립 포인트: " + volumnCredits + "점\n";
