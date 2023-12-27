@@ -48,19 +48,15 @@ class StatementData {
     }
 
     long totalAmount() {
-        long totalAmount = 0L;
-        for (Performance performance : invoice.performances()) {
-            totalAmount += amountFor(performance);
-        }
-        return totalAmount;
+        return invoice.performances().stream()
+                .mapToLong(this::amountFor)
+                .sum();
     }
 
     long totalVolumeCredits() {
-        long volumnCredits = 0L;
-        for (Performance performance : invoice.performances()) {
-            volumnCredits += volumeCreditsFor(performance);
-        }
-        return volumnCredits;
+        return invoice.performances().stream()
+                .mapToLong(this::volumeCreditsFor)
+                .sum();
     }
 
     private long volumeCreditsFor(final Performance performance) {
