@@ -37,11 +37,11 @@ class Statement {
         StringBuilder result = new StringBuilder();
         result.append(String.format("청구 내역 (고객명: %s)\n", data.customer()));
 
-        for (Performance performance : data.performances()) {
+        for (EnrichPerformance performance : data.performances()) {
             result.append(String.format(
                     "%s: %s (%d석)\n",
-                    data.playFor(performance).name(),
-                    usd(data.amountFor(performance)),
+                    performance.name(),
+                    usd(performance.amount()),
                     performance.audience()
             ));
         }
@@ -57,10 +57,10 @@ class Statement {
         result.append("<table>\n");
         result.append("<tr><th>연극</th><th>좌석 수</th><th>금액</th></tr>\n");
 
-        for (Performance performance : data.performances()) {
+        for (EnrichPerformance performance : data.performances()) {
             result.append(String.format("<tr><td>%s</td><td>%s</td><td>%d석</td></tr>\n",
-                    data.playFor(performance).name(),
-                    data.amountFor(performance),
+                    performance.name(),
+                    usd(performance.amount()),
                     performance.audience())
             );
         }
