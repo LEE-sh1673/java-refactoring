@@ -60,7 +60,7 @@ class Statement {
         for (Performance performance : data.performances()) {
             result.append(String.format("<tr><td>%s</td><td>%s</td><td>%d석</td></tr>\n",
                     data.playFor(performance).name(),
-                    data.amountFor(performance),
+                    usd(data.amountFor(performance)),
                     performance.audience())
             );
         }
